@@ -1,0 +1,7 @@
+Pipfile
+vectors.txt
+test.py
+test_average.py
+diffs
+nn_layers.out
+scrape_results.txt
