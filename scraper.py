@@ -28,9 +28,9 @@ if response.status_code == 200:
                 category_tag = nested_li.find('strong')
                 if category_tag:
                     category = category_tag.get_text()
-                    words = nested_li.get_text().replace(category, '').replace('-', '').strip()
+                    words = nested_li.get_text().replace(category, '', 1).replace('-', '').strip()
                     category = ' '.join([c for c in category.split() if c.isalpha()])
-                    colours[cols[difficulty]] = {category: [word.strip() for word in words.split(',') if word.strip().isalpha()]}
+                    colours[cols[difficulty]] = {category: [word.strip() for word in words.split(',')]}
                     difficulty += 1
 
             connections[day] = colours
