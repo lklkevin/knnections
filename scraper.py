@@ -2,6 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+
+def clean(word: str) -> str:
+    lst = list(word)
+    new = [n for n in lst if n.isalnum() or n.isspace()]
+
+    return ''.join(new)
+
 url = 'https://tryhardguides.com/nyt-connections-answers/'
 headers = {'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36'}
 response = requests.get(url, headers=headers)
@@ -29,8 +36,9 @@ if response.status_code == 200:
                 if category_tag:
                     category = category_tag.get_text()
                     words = nested_li.get_text().replace(category, '', 1).replace('-', '').strip()
-                    category = ' '.join([c for c in category.split() if c.isalpha()])
-                    colours[cols[difficulty]] = {category: [word.strip() for word in words.split(',')]}
+                    temp = [clean(c.strip()) for c in category.split()]
+                    category = ' '.join([t for t in temp if t]).strip()
+                    colours[cols[difficulty]] = {category: [clean(word.strip()) for word in words.split(',')]}
                     difficulty += 1
 
             connections[day] = colours
