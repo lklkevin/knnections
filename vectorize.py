@@ -1,8 +1,6 @@
 import random
-
 import gensim.downloader as api
 import numpy as np
-from sklearn.cluster import KMeans
 from k_means_constrained import KMeansConstrained
 import scraper
 
@@ -31,6 +29,7 @@ def init_vectors(vect_name: str):
 
 
 def vectorize(x: list, y: list, vectorizer):
+    # y is suppose to be labels but they cant be vectorized bc theyre mostly longer than 1 word
     word_vectors = []
     label_vectors = []
     for word in x:
@@ -76,7 +75,6 @@ def random_guess():
         for guessed_group in guessed_groups:
             if guessed_group in correct_groups_list:
                 correct_groups += 1
-                print(guessed_group)
 
         total_groups += 4
 
@@ -99,15 +97,13 @@ def kmeans(word_vectors, correct):
     right = 0
     for cluster, group in grouped_words.items():
         if any(np.array_equal(group, g) for g in [g1, g2, g3, g4]):
-            print(group)
             right += 1
 
     return right
 
 print(random_guess())
-# a, b = init_vectors('fasttext-wiki-news-subwords-300')
-# counter = 0
-# for i in range(len(b)):
-#     counter += kmeans(a[i], b[i])
-#
-# print(counter / (len(b) * 4))
+a, b = init_vectors('fasttext-wiki-news-subwords-300')
+counter = 0
+for i in range(len(b)):
+    counter += kmeans(a[i], b[i])
+print(counter / (len(b) * 4))
