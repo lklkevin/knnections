@@ -1,6 +1,6 @@
 from vectorize import *
 from pca import *
-# from distance_opt import *
+from distance_opt import *
 from sklearn.model_selection import train_test_split
 
 WORDS_PER_DAY = 16
@@ -21,7 +21,9 @@ if __name__ == '__main__':
     print(f"Accuracy by randomly guessing: {random_guess()}\n")
     
     RUN_SETTINGS = {
-        'gridsearch_pca': True,
+        'gridsearch_pca': False,
+        'pca_k': 7,
+        'enable_epoch_print': False,
     }
     
     data = np.load("features.npy") # N x 16 x D
@@ -33,8 +35,18 @@ if __name__ == '__main__':
     
     if (RUN_SETTINGS['gridsearch_pca']):
         gridsearch_psa(X_train, y_train, label_str_train)
+    
+    for i in range(len(X_train)):
+        # init inputs
+        day_vectors = np.vstack([X_train[i], y_train[i]])
+        day_vectors, variance = apply_pca(day_vectors, RUN_SETTINGS['pca_k'])
+
+        # inputs = 16 x pca_k input words, labels = 16 x pca_k expected answers
+        inputs, labels = day_vectors[:WORDS_PER_DAY], np.repeat(day_vectors[WORDS_PER_DAY:], 4, axis=0)
         
-    
-    
-    
+        model = train_and_get_model(inputs, labels, RUN_SETTINGS['pca_k'], RUN_SETTINGS['enable_epoch_print'])
+        transformed_inputs = model(inputs).detach().numpy()
+        
+        print(f"{kmeans(transformed_inputs, label_str_train[i])} clusters guessed correctly for the day")
+        print(f"-------------------------------")
         
