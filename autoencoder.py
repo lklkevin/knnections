@@ -51,7 +51,7 @@ def optimize(start_dim, inp, reduced_dim=5, epochs=11, lr=0.005):
         # Full-batch used
         curr = data
 
-        # Forward pass, calculate loss, backwards pass
+        # Forward pass, calculate loss, backwards pass, optimize
         reconstruction = model(curr)
         loss = ls(reconstruction, curr)
         optimizer.zero_grad()
