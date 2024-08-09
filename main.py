@@ -102,7 +102,7 @@ if __name__ == '__main__':
     # }
 
     # groups = ['FastText', 'Word2Vec', 'GloVe', 'BERT']
-    # categories = ['Yellow', 'Green', 'Blue', 'Purple', 'Total']
+    categories = ['Yellow', 'Green', 'Blue', 'Purple', 'Total']
     # fig, ax = plt.subplots(figsize=(12, 6))
 
     # for i, group in enumerate(groups):
@@ -117,26 +117,27 @@ if __name__ == '__main__':
     # plt.tight_layout()
     # plt.show()
 
-    # clustering_performance = {
-    #     'Normalized KMeans Constrained': [0.7244897959183674, 0.6938775510204082, 0.717687074829932, 0.6870748299319728, 0.7058],
-    #     'Unnormalized KMeans Constrained': [0.9183673469387755, 0.8707482993197279, 0.8843537414965986, 0.8537414965986394, 0.8818027210884354],
-    #     'Unnormalized KMeans': [0.7721088435374149, 0.7517006802721088, 0.7585034013605442, 0.7312925170068028, 0.7534013605442176],
-    #     'Unnormalized HCA (Agglomerative)': [0.7993197278911565, 0.7993197278911565, 0.7619047619047619, 0.7448979591836735, 0.7763605442176871]
-    # }
-    # groups = ['Normalized KMeans Constrained', 'Unnormalized KMeans Constrained', 'Unnormalized KMeans', 'Unnormalized HCA (Agglomerative)']
-    # fig, ax = plt.subplots(figsize=(12, 6))
 
-    # for i, group in enumerate(groups):
-    #     ax.bar(np.arange(len(categories)) + i * 0.2, clustering_performance[group], 0.2, label=group, color=plt.cm.viridis(i / len(groups)))
+    clustering_performance = {
+        'Normalized KMeans Constrained': [0.7637795275590551, 0.7322834645669292, 0.6929133858267716, 0.7165354330708661, 0.7263779527559056],
+        'Unnormalized KMeans Constrained': [0.84251968503937, 0.8188976377952756, 0.8503937007874016, 0.8582677165354331, 0.8425196850393701],
+        'Unnormalized KMeans': [0.8031496062992126, 0.7559055118110236, 0.7716535433070866, 0.7559055118110236, 0.7716535433070866],
+        'Unnormalized HCA (Agglomerative)': [0.8031496062992126, 0.7952755905511811, 0.7637795275590551, 0.7322834645669292, 0.7736220472440946]
+    }
+    groups = ['Normalized KMeans Constrained', 'Unnormalized KMeans Constrained', 'Unnormalized KMeans', 'Unnormalized HCA (Agglomerative)']
+    fig, ax = plt.subplots(figsize=(12, 6))
 
-    # ax.set_xlabel('Difficulties')
-    # ax.set_ylabel('Accuracy')
-    # ax.set_title('Comparison of Post-Transform Clustering Algorithm Accuracies Across Connections Difficulties')
-    # ax.set_xticks(np.arange(len(categories)) + 0.2 * 1.5)
-    # ax.set_xticklabels(categories)
-    # ax.legend()
-    # plt.tight_layout()
-    # plt.show()
+    for i, group in enumerate(groups):
+        ax.bar(np.arange(len(categories)) + i * 0.2, clustering_performance[group], 0.2, label=group, color=plt.cm.viridis(i / len(groups)))
+
+    ax.set_xlabel('Difficulties')
+    ax.set_ylabel('Accuracy')
+    ax.set_title('Comparison of Post-Transform Clustering Algorithm Accuracies Across Connections Difficulties')
+    ax.set_xticks(np.arange(len(categories)) + 0.2 * 1.5)
+    ax.set_xticklabels(categories)
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
 
     # print(random_guess())
     
