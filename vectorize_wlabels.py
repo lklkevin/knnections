@@ -44,19 +44,12 @@ if __name__ == "__main__":
     tk = BertTokenizer.from_pretrained('bert-base-uncased')
     md = BertModel.from_pretrained('bert-base-uncased')
     a, b, c, d = vectorize(md, tk)
+    # a is N x 16 x 768
+    # b is N x 16
+    # c is N x 4 x 768
+    # d is N x 4
 
     np.save('bert_ft_vect.npy', a)
     np.save('bert_ft.npy', b)
     np.save('bert_lb_vect.npy', c)
     np.save('bert_lb.npy', d)
-
-    tk = GPT2Tokenizer.from_pretrained('gpt2')
-    tk.pad_token = tk.eos_token
-    md = GPT2Model.from_pretrained('gpt2')
-    a, b, c, d = vectorize(md, tk)
-
-    np.save('gpt_ft_vect.npy', a)
-    np.save('gpt_ft.npy', b)
-    np.save('gpt_lb_vect.npy', c)
-    np.save('gpt_lb.npy', d)
-

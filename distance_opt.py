@@ -11,8 +11,8 @@ learning_rate = 0.001
 class SimpleNN(nn.Module):
     def __init__(self, PCA_DIMS):
         super(SimpleNN, self).__init__()
-        self.fc1 = nn.Linear(PCA_DIMS, PCA_DIMS * 2)
         self.relu = nn.ReLU()
+        self.fc1 = nn.Linear(PCA_DIMS, PCA_DIMS * 2)
         self.fc2 = nn.Linear(PCA_DIMS * 2, PCA_DIMS * 8)
         self.fc3 = nn.Linear(PCA_DIMS * 8, PCA_DIMS * 8)
         self.fc4 = nn.Linear(PCA_DIMS * 8, PCA_DIMS * 2)
@@ -28,6 +28,7 @@ class SimpleNN(nn.Module):
         x = self.fc3(x)
         x = self.relu(x)
         x = self.fc4(x)
+        x = self.relu(x)
         x = self.fc5(x)
         
         return x
@@ -35,7 +36,7 @@ class SimpleNN(nn.Module):
 def train_and_get_model(X_train, y_train, PCA_DIMS = 7, ENABLE_PRINT = True):
     # Instantiate the model, define the loss function and the optimizer
     model = SimpleNN(PCA_DIMS)
-    criterion = nn.MSELoss()
+    criterion = nn.SmoothL1Loss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     for epoch in range(num_epochs):

@@ -43,14 +43,14 @@ class Autoencoder(torch.nn.Module):
         return self.decoder(self.encoder(x))
 
 
-def optimize(start_dim, reduced_dim, epochs, inp, lr=0.005):
+def optimize(start_dim, inp, reduced_dim=5, epochs=11, lr=0.005):
     model = Autoencoder(start_dim, reduced_dim)
     ls = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     losses = []
     data = torch.tensor(inp, dtype=torch.float32)
 
-    for ep in range(epochs):
+    for _ in range(epochs):
         curr = data
 
         reconstruction = model(curr)
@@ -76,7 +76,7 @@ def grid_search(x_file, y_file):
     for reduced_dim, epochs, lr in itertools.product(reduced_dims, epochs_list, learning_rates):
         total_loss = 0
         for i in range(tr.shape[0]):
-            a, b = optimize(768, reduced_dim=reduced_dim, epochs=epochs, inp=tr[i], lr=lr)
+            a, b = optimize(768, inp=tr[i], reduced_dim=reduced_dim, epochs=epochs, lr=lr)
             total_loss += b[-1].detach().item()
         average_loss = total_loss / tr.shape[0]
         results.append((reduced_dim, epochs, lr, average_loss))
@@ -105,13 +105,13 @@ if __name__ == "__main__":
     total_loss = np.zeros(15)
 
     for i in range(temp.shape[0]):
-        reduced, loss = optimize(768, 5, 15, temp[i], 0.005)
+        reduced, loss = optimize(768, temp[i], 5, 15, 0.005)
         for j in range(15):
             total_loss[j] += loss[j].detach().item()
 
     avg_loss = total_loss / temp.shape[0]
     plt.figure(figsize=(10, 6))
-    plt.plot(np.arange(15), avg_loss, marker='o', linestyle='-')
+    plt.plot(np.arange(1, 16), avg_loss, marker='o', linestyle='-')
     plt.xlabel('Epoch')
     plt.ylabel('Average Loss')
     plt.title('Average Loss vs Epoch for Autoencoder Training')

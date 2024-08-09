@@ -75,24 +75,24 @@ def kmeans(word_vectors, correct):
     returns # of groups predicted correctly using k-means clustering algorithm
 
     Args:
-        word_vectors (np array): 16 x D, contains 16 vectorized words
-        correct (np array): 16 x 1, contains string of correct group of ith word
-
+        word_vectors (np array): 16 x D, contains 16 vectorized words in the correct order
+        correct (np array): 16 x 1, the 16 words as strings in the same order as the vectors
     Returns:
         int: # of correct groups
     """
-    km = KMeansConstrained(n_clusters=4, size_min=4, size_max=5, random_state=0).fit(word_vectors)
     g1 = correct[0:4]
     g2 = correct[4:8]
     g3 = correct[8:12]
     g4 = correct[12:16]
+    km = KMeansConstrained(n_clusters=4, size_min=4, size_max=4, random_state=0).fit(word_vectors)
 
     clusters = km.predict(word_vectors)
+    print(clusters)
     grouped_words = {}
-    for word, cluster in zip(correct, clusters):
-        if cluster not in grouped_words:
-            grouped_words[cluster] = []
-        grouped_words[cluster].append(word)
+    for i in range(16):
+        if clusters[i] not in grouped_words:
+            grouped_words[clusters[i]] = []
+        grouped_words[clusters[i]].append(correct[i])
 
     right = 0
     for cluster, group in grouped_words.items():
