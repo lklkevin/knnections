@@ -5,10 +5,12 @@ import scraper
 
 
 def encode(model, tokenizer, texts):
+    # Encode using bert tokenizer
     encoding = tokenizer.batch_encode_plus(texts, padding=True, truncation=True,
                                            return_tensors='pt', add_special_tokens=True)
 
     with torch.no_grad():
+        # Put the encoding in the bert model to get the word embeddings
         outputs = model(encoding['input_ids'], attention_mask=encoding['attention_mask'])
         word_embeddings = outputs.last_hidden_state.mean(dim=1)
 
@@ -26,11 +28,12 @@ def vectorize(model, tokenizer):
     for entry in data:
         x = entry[1]
         y = entry[0]
+
+        # Only include valid data
         if x == "" or y == "" or len(x) != 16 or len(y) != 4:
             continue
-
+        
         combined = x + y
-
         curr = encode(model, tokenizer, combined)
         features.append(np.array(x))
         labels.append(np.array(y))
