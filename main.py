@@ -61,13 +61,13 @@ if __name__ == '__main__':
         'enable_epoch_print': False,
     }
     
-    feature_vects = np.load('bert_ft_vect.npy') # N x 16 x D
-    feature_names = np.load('bert_ft.npy') # N x 16
-    label_vects = np.load('bert_lb_vect.npy') # N x 4 x D
-    label_names = np.load('bert_lb.npy') # N x 4
+    # feature_vects = np.load('bert_ft_vect.npy') # N x 16 x D
+    # feature_names = np.load('bert_ft.npy') # N x 16
+    # label_vects = np.load('bert_lb_vect.npy') # N x 4 x D
+    # label_names = np.load('bert_lb.npy') # N x 4
 
-    X_tr, X_tt, X_tr_str, X_tt_str, y_tr, y_tt, y_tr_str, y_tt_str = train_test_split(
-        feature_vects, feature_names, label_vects, label_names, test_size=0.3, random_state=0
+    X_tr, X_tt, X_tr_str, X_tt_str, y_tr, y_tt, y_tr_str, y_tt_str = load_vect(
+        'bert_ft_vect.npy', 'bert_ft.npy', 'bert_lb_vect.npy', 'bert_lb.npy'
     )
     
     if (RUN_SETTINGS['gridsearch_pca']):

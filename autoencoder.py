@@ -3,15 +3,7 @@ import numpy as np
 import torch
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-
-
-def load(x_filename: str, y_filename: str):
-    x = np.load(x_filename)
-    y = np.load(y_filename)
-    total = np.concatenate((x, y), axis=1)
-    train, test = train_test_split(total, test_size=0.3, random_state=0)
-
-    return train, test
+from vectorize import load_vect as load
 
 
 class Autoencoder(torch.nn.Module):
@@ -95,9 +87,8 @@ if __name__ == "__main__":
     plt.bar(x, heights, tick_label=labels)
     plt.xlabel('Combination of Hyperparameters (Reduced Dim, Epochs, Learning Rate)')
     plt.ylabel('Average Loss')
-    plt.title('Grid Search Results Sorted by Average Loss')
+    plt.title('Grid Search Results Sorted by Average Loss in BERT Vectorized Training Data')
     plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
     plt.show()
 
     # Note we are only use the training set
@@ -114,6 +105,6 @@ if __name__ == "__main__":
     plt.plot(np.arange(1, 16), avg_loss, marker='o', linestyle='-')
     plt.xlabel('Epoch')
     plt.ylabel('Average Loss')
-    plt.title('Average Loss vs Epoch for Autoencoder Training')
+    plt.title('Average Loss vs Epoch in Autoencoder Training')
     plt.grid(True)
     plt.show()
