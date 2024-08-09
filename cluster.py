@@ -2,6 +2,7 @@ from k_means_constrained import KMeansConstrained
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
 
+
 def kmeans(word_vectors, words, constrained=True):
 
     # Perform constrained variant of KMeans algorithm

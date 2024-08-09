@@ -4,7 +4,6 @@ Runner file for knnections.
 from vectorize import *
 from pca import *
 from distance_opt import *
-from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
 import autoencoder
 import cluster
@@ -139,7 +138,7 @@ if __name__ == '__main__':
     # plt.tight_layout()
     # plt.show()
 
-    print(random_guess())
+    # print(random_guess())
     
     # The 4 loaded .npy files have respective sizes:
     # N x 16 x D
@@ -151,13 +150,13 @@ if __name__ == '__main__':
         './data/bert_ft_vect.npy', './data/bert_ft.npy', './data/bert_lb_vect.npy', './data/bert_lb.npy'
     )
 
-    visualize_vectors.show_indiv(optimize_day(reduce_dim_day(X_tr[83], y_tr[83], 8, True)), X_tr_str[83])
+    # visualize_vectors.show_indiv(optimize_day(reduce_dim_day(X_tr[83], y_tr[83], 8, True)), X_tr_str[83])
     
     correct = {i:0 for i in range(4)}
 
-    for i in range(len(X_tr)):
+    for i in range(len(X_tt)):
 
-        transformed_inputs = optimize_day(reduce_dim_day(X_tr[i], y_tr[i], 8, True))
+        transformed_inputs = optimize_day(reduce_dim_day(X_tt[i], y_tt[i], 8, True))
 
         # To normalize, uncomment below line
         # transformed_inputs = preprocessing.normalize(transformed_inputs)
@@ -166,19 +165,19 @@ if __name__ == '__main__':
         shuffled_index = np.arange(16)
         np.random.shuffle(shuffled_index)
         transformed_inputs = transformed_inputs[shuffled_index]
-        feature_strs = X_tr_str[i][shuffled_index]
+        feature_strs = X_tt_str[i][shuffled_index]
 
         # Perform clustering to get guesses and check the guesses
         # You can switch the clustering algs here
         guesses = cluster.kmeans(transformed_inputs, feature_strs)
-        right = check(guesses, X_tr_str[i])
+        right = check(guesses, X_tt_str[i])
 
         correct = {i:correct[i] + right[i] for i in range(4)}
 
         print(i)
         print(correct)
 
-    correct = {i:correct[i] / len(X_tr) for i in range(4)}
+    correct = {i:correct[i] / len(X_tt) for i in range(4)}
     print(correct)
     print(sum(correct.values()) / 4)
         
