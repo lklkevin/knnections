@@ -51,7 +51,7 @@ def show(input_vects, input_words, index, labels_vects=None, labels=None):
 
 
 if __name__ == "__main__":
-    show('bert_ft_vect.npy', 'bert_ft.npy', 2, 'bert_lb_vect.npy', 'bert_lb.npy')
-    show('fst.npy', 'fst_actual.npy', 1)
-    show('w2v.npy', 'w2v_actual.npy', 1)
-    show('glv.npy', 'glv_actual.npy', 1)
+    show('./data/bert_ft_vect.npy', './data/bert_ft.npy', 2, './data/bert_lb_vect.npy', './data/bert_lb.npy')
+    show('./data/fst.npy', './data/fst_actual.npy', 1)
+    show('./data/w2v.npy', './data/w2v_actual.npy', 1)
+    show('./data/glv.npy', './data/glv_actual.npy', 1)

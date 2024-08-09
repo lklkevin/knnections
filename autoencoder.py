@@ -89,7 +89,7 @@ def grid_search(x_file, y_file):
 
 
 if __name__ == "__main__":
-    combos = grid_search('bert_ft_vect.npy', 'bert_lb_vect.npy')
+    combos = grid_search('./data/bert_ft_vect.npy', './data/bert_lb_vect.npy')
     labels = [f'{t[0]}, {t[1]}, {t[2]}' for t in combos]
     heights = [t[3] for t in combos]
 

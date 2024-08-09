@@ -107,4 +107,4 @@ def dist_opt_gridsearch(x_file, y_file):
 
 
 if __name__ == "__main__":
-    dist_opt_gridsearch("bert_ft_vect.npy", "bert_lb_vect.npy")
+    dist_opt_gridsearch("./data/bert_ft_vect.npy", "./data/bert_lb_vect.npy")

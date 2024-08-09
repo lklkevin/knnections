@@ -52,7 +52,7 @@ if __name__ == "__main__":
     # c is N x 4 x 768
     # d is N x 4
 
-    np.save('bert_ft_vect.npy', a)
-    np.save('bert_ft.npy', b)
-    np.save('bert_lb_vect.npy', c)
-    np.save('bert_lb.npy', d)
+    # np.save('bert_ft_vect.npy', a)
+    # np.save('bert_ft.npy', b)
+    # np.save('bert_lb_vect.npy', c)
+    # np.save('bert_lb.npy', d)

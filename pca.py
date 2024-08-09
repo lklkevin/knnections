@@ -28,7 +28,7 @@ def pca_gridsearch(word_vectors):
 
 
 if __name__ == "__main__":
-    data, _ = load('bert_ft_vect.npy', 'bert_lb_vect.npy')
+    data, _ = load('./data/bert_ft_vect.npy', './data/bert_lb_vect.npy')
     final = np.zeros(14)
     for i in range(data.shape[0]):
         final = np.add(final, pca_gridsearch(data[i]))

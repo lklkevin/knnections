@@ -68,7 +68,7 @@ def baseline_model(x_vect, x_str):
 
 
 def random_guess():
-    x_str = np.load('fst_actual.npy')
+    x_str = np.load('./data/fst_actual.npy')
     correct = {i:0 for i in range(4)}
 
     for i in range(len(x_str)):
@@ -85,7 +85,7 @@ def random_guess():
 
 
 if __name__ == '__main__':
-    # tests = [('bert_ft_vect.npy', 'bert_ft.npy'), ('fst.npy', 'fst_actual.npy'), ('w2v.npy', 'w2v_actual.npy'), ('glv.npy', 'glv_actual.npy')]
+    # tests = [('./data/bert_ft_vect.npy', './data/bert_ft.npy'), ('./data/fst.npy', './data/fst_actual.npy'), ('./data/w2v.npy', './data/w2v_actual.npy'), ('./data/glv.npy', './data/glv_actual.npy')]
     # for test in tests:
     #     x, x_str = load_vect(*test)
 
@@ -118,26 +118,26 @@ if __name__ == '__main__':
     plt.tight_layout()
     plt.show()
 
-    clustering_performance = {
-        'Normalized KMeans Constrained': [0.7244897959183674, 0.6938775510204082, 0.717687074829932, 0.6870748299319728, 0.7058],
-        'Unnormalized KMeans Constrained': [0.9183673469387755, 0.8707482993197279, 0.8843537414965986, 0.8537414965986394, 0.8818027210884354],
-        'Unnormalized KMeans': [0.7721088435374149, 0.7517006802721088, 0.7585034013605442, 0.7312925170068028, 0.7534013605442176],
-        'Unnormalized HCA (Agglomerative)': [0.7993197278911565, 0.7993197278911565, 0.7619047619047619, 0.7448979591836735, 0.7763605442176871]
-    }
-    groups = ['Normalized KMeans Constrained', 'Unnormalized KMeans Constrained', 'Unnormalized KMeans', 'Unnormalized HCA (Agglomerative)']
-    fig, ax = plt.subplots(figsize=(12, 6))
+    # clustering_performance = {
+    #     'Normalized KMeans Constrained': [0.7244897959183674, 0.6938775510204082, 0.717687074829932, 0.6870748299319728, 0.7058],
+    #     'Unnormalized KMeans Constrained': [0.9183673469387755, 0.8707482993197279, 0.8843537414965986, 0.8537414965986394, 0.8818027210884354],
+    #     'Unnormalized KMeans': [0.7721088435374149, 0.7517006802721088, 0.7585034013605442, 0.7312925170068028, 0.7534013605442176],
+    #     'Unnormalized HCA (Agglomerative)': [0.7993197278911565, 0.7993197278911565, 0.7619047619047619, 0.7448979591836735, 0.7763605442176871]
+    # }
+    # groups = ['Normalized KMeans Constrained', 'Unnormalized KMeans Constrained', 'Unnormalized KMeans', 'Unnormalized HCA (Agglomerative)']
+    # fig, ax = plt.subplots(figsize=(12, 6))
 
-    for i, group in enumerate(groups):
-        ax.bar(np.arange(len(categories)) + i * 0.2, clustering_performance[group], 0.2, label=group, color=plt.cm.viridis(i / len(groups)))
+    # for i, group in enumerate(groups):
+    #     ax.bar(np.arange(len(categories)) + i * 0.2, clustering_performance[group], 0.2, label=group, color=plt.cm.viridis(i / len(groups)))
 
-    ax.set_xlabel('Difficulties')
-    ax.set_ylabel('Accuracy')
-    ax.set_title('Comparison of Post-Transform Clustering Algorithm Accuracies Across Connections Difficulties')
-    ax.set_xticks(np.arange(len(categories)) + 0.2 * 1.5)
-    ax.set_xticklabels(categories)
-    ax.legend()
-    plt.tight_layout()
-    plt.show()
+    # ax.set_xlabel('Difficulties')
+    # ax.set_ylabel('Accuracy')
+    # ax.set_title('Comparison of Post-Transform Clustering Algorithm Accuracies Across Connections Difficulties')
+    # ax.set_xticks(np.arange(len(categories)) + 0.2 * 1.5)
+    # ax.set_xticklabels(categories)
+    # ax.legend()
+    # plt.tight_layout()
+    # plt.show()
 
     print(random_guess())
     
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     # N x 4
 
     X_tr, X_tt, X_tr_str, X_tt_str, y_tr, y_tt, y_tr_str, y_tt_str = load_vect(
-        'bert_ft_vect.npy', 'bert_ft.npy', 'bert_lb_vect.npy', 'bert_lb.npy'
+        './data/bert_ft_vect.npy', './data/bert_ft.npy', './data/bert_lb_vect.npy', './data/bert_lb.npy'
     )
 
     visualize_vectors.show_indiv(optimize_day(reduce_dim_day(X_tr[83], y_tr[83], 8, True)), X_tr_str[83])
@@ -169,6 +169,7 @@ if __name__ == '__main__':
         feature_strs = X_tr_str[i][shuffled_index]
 
         # Perform clustering to get guesses and check the guesses
+        # You can switch the clustering algs here
         guesses = cluster.kmeans(transformed_inputs, feature_strs)
         right = check(guesses, X_tr_str[i])
 
