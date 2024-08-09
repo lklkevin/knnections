@@ -3,7 +3,6 @@ import gensim.downloader as api
 import numpy as np
 from k_means_constrained import KMeansConstrained
 import scraper
-from pca import apply_pca
 
 
 def init_vectors(vect_name: str):
@@ -11,7 +10,6 @@ def init_vectors(vect_name: str):
     vectorizer = api.load(vect_name)
 
     features = []
-    labels = []
     correct = []
 
     for entry in data:
@@ -20,35 +18,25 @@ def init_vectors(vect_name: str):
         if x == "" or y == "":
             continue
 
-        xk, y = vectorize(x, y, vectorizer)
+        xk = vectorize(x, vectorizer)
         if xk is not None and len(x) == 16:
             features.append(xk)
             correct.append(np.array(x))
-            labels.append(y)
 
-    return features, correct
+    return np.stack(features), np.stack(correct)
 
 
-def vectorize(x: list, y: list, vectorizer):
+def vectorize(x: list, vectorizer):
     # y is suppose to be labels but they cant be vectorized bc theyre mostly longer than 1 word
     word_vectors = []
-    label_vectors = []
     for word in x:
         word = word.lower()
         if word in vectorizer:
             word_vectors.append(vectorizer[word])
         else:
-            return None, None
+            return None
 
-    # for word in y:
-    #     word = word.lower()z
-    #     if word in vectorizer:
-    #         label_vectors.append(vectorizer[word])
-    #     else:
-    #         print(word)
-    #         return None, None
-
-    return np.array(word_vectors), np.array(label_vectors)
+    return np.array(word_vectors)
 
 
 def random_guess():
@@ -87,9 +75,8 @@ def kmeans(word_vectors, correct):
     returns # of groups predicted correctly using k-means clustering algorithm
 
     Args:
-        word_vectors (np array): 16 x D, contains 16 vectorized words
-        correct (np array): 16 x 1, contains string of correct group of ith word
-
+        word_vectors (np array): 16 x D, contains 16 vectorized words in the correct order
+        correct (np array): 16 x 1, the 16 words as strings in the same order as the vectors
     Returns:
         int: # of correct groups
     """
@@ -99,13 +86,15 @@ def kmeans(word_vectors, correct):
     g2 = correct[4:8]
     g3 = correct[8:12]
     g4 = correct[12:16]
+    km = KMeansConstrained(n_clusters=4, size_min=4, size_max=4, random_state=0).fit(word_vectors)
 
     clusters = km.predict(word_vectors)
+    print(clusters)
     grouped_words = {}
-    for word, cluster in zip(correct, clusters):
-        if cluster not in grouped_words:
-            grouped_words[cluster] = []
-        grouped_words[cluster].append(word)
+    for i in range(16):
+        if clusters[i] not in grouped_words:
+            grouped_words[clusters[i]] = []
+        grouped_words[clusters[i]].append(correct[i])
 
     right = 0
     for cluster, group in grouped_words.items():
@@ -113,3 +102,45 @@ def kmeans(word_vectors, correct):
             right += 1
 
     return right
+
+
+if __name__ == "__main__":
+    w2v, w2v_actual = init_vectors('word2vec-google-news-300')
+    glv, glv_actual = init_vectors('glove-wiki-gigaword-300')
+    fst, fst_actual = init_vectors('fasttext-wiki-news-subwords-300')
+
+    print(w2v.shape)
+    print(glv.shape)
+    print(fst.shape)
+
+    np.save('w2v.npy', w2v)
+    np.save('w2v_actual.npy', w2v_actual)
+    np.save('glv.npy', glv)
+    np.save('glv_actual.npy', glv_actual)
+    np.save('fst.npy', fst)
+    np.save('fst_actual.npy', fst_actual)
+
+# print(random_guess())
+# # a, b = init_vectors('fasttext-wiki-news-subwords-300')
+# data = np.load("data.npy") # N x 16 x D
+# clusters = np.load("ordered.npy") # N x 16
+# # a = apply_pca(a)
+# ALL_FEATURES = len(data[0][0])
+# for FEATURE_COUNT in range(1, min(ALL_FEATURES, 16) + 1):
+#     counter = 0
+#     for i in range(len(data)):
+#         day_vectors = data[i]
+#         counter += kmeans(apply_pca(day_vectors, FEATURE_COUNT), clusters[i])
+#     print(f"{FEATURE_COUNT} pca dim: {counter / (len(data) * 4)}")
+#
+# print("------------------------------------------------------------------")
+# data2 = data.reshape(data.shape[0] * data.shape[1], data.shape[2])
+
+# for FEATURE_COUNT in range(1, ALL_FEATURES):
+#     counter = 0
+#     temp = apply_pca(data2, FEATURE_COUNT)
+#     temp = temp.reshape(data.shape[0], data.shape[1], temp.shape[1])
+#     for i in range(len(data)):
+#         day_vectors = temp[i]
+#         counter += kmeans(day_vectors, clusters[i])
+#     print(f"{FEATURE_COUNT} pca dim: {counter / (len(data) * 4)}")
