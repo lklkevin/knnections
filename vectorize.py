@@ -80,6 +80,8 @@ def random_guess():
         total_groups += 4
 
     return correct_groups / total_groups
+
+
 def kmeans(word_vectors, correct):
     """
     returns # of groups predicted correctly using k-means clustering algorithm
@@ -91,7 +93,7 @@ def kmeans(word_vectors, correct):
     Returns:
         int: # of correct groups
     """
-    km = KMeansConstrained(n_clusters=4, size_min=4, size_max=5, random_state=0)
+    km = KMeansConstrained(n_clusters=4, size_min=4, size_max=4, random_state=0)
     fitted = km.fit(word_vectors)
     g1 = correct[0:4]
     g2 = correct[4:8]
@@ -111,28 +113,3 @@ def kmeans(word_vectors, correct):
             right += 1
 
     return right
-
-print(random_guess())
-# a, b = init_vectors('fasttext-wiki-news-subwords-300')
-data = np.load("data.npy") # N x 16 x D
-clusters = np.load("ordered.npy") # N x 16
-# a = apply_pca(a)
-ALL_FEATURES = len(data[0][0])
-for FEATURE_COUNT in range(1, min(ALL_FEATURES, 16) + 1):
-    counter = 0
-    for i in range(len(data)):
-        day_vectors = data[i]
-        counter += kmeans(apply_pca(day_vectors, FEATURE_COUNT), clusters[i])
-    print(f"{FEATURE_COUNT} pca dim: {counter / (len(data) * 4)}")
-
-print("------------------------------------------------------------------")    
-data2 = data.reshape(data.shape[0] * data.shape[1], data.shape[2])
-
-# for FEATURE_COUNT in range(1, ALL_FEATURES):
-#     counter = 0
-#     temp = apply_pca(data2, FEATURE_COUNT)
-#     temp = temp.reshape(data.shape[0], data.shape[1], temp.shape[1])
-#     for i in range(len(data)):
-#         day_vectors = temp[i]
-#         counter += kmeans(day_vectors, clusters[i])
-#     print(f"{FEATURE_COUNT} pca dim: {counter / (len(data) * 4)}")
