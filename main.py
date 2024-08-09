@@ -94,28 +94,28 @@ if __name__ == '__main__':
     #     print(avg)
 
     # The data above should be something like:
-    vectorizer_performance = {
-        'FastText': [0.3611859838274933, 0.2884097035040431, 0.1967654986522911, 0.1320754716981132, 0.24460916442048516],
-        'Word2Vec': [0.3, 0.2257142857142857, 0.14285714285714285, 0.06857142857142857, 0.1842857142857143],
-        'GloVe': [0.2700534759358289, 0.19518716577540107, 0.13636363636363635, 0.08823529411764706, 0.17245989304812834],
-        'BERT': [0.12826603325415678, 0.07125890736342043, 0.0498812351543943, 0.019002375296912115, 0.0671021377672209]
-    }
+    # vectorizer_performance = {
+    #     'FastText': [0.3611859838274933, 0.2884097035040431, 0.1967654986522911, 0.1320754716981132, 0.24460916442048516],
+    #     'Word2Vec': [0.3, 0.2257142857142857, 0.14285714285714285, 0.06857142857142857, 0.1842857142857143],
+    #     'GloVe': [0.2700534759358289, 0.19518716577540107, 0.13636363636363635, 0.08823529411764706, 0.17245989304812834],
+    #     'BERT': [0.12826603325415678, 0.07125890736342043, 0.0498812351543943, 0.019002375296912115, 0.0671021377672209]
+    # }
 
-    groups = ['FastText', 'Word2Vec', 'GloVe', 'BERT']
-    categories = ['Yellow', 'Green', 'Blue', 'Purple', 'Total']
-    fig, ax = plt.subplots(figsize=(12, 6))
+    # groups = ['FastText', 'Word2Vec', 'GloVe', 'BERT']
+    # categories = ['Yellow', 'Green', 'Blue', 'Purple', 'Total']
+    # fig, ax = plt.subplots(figsize=(12, 6))
 
-    for i, group in enumerate(groups):
-        ax.bar(np.arange(len(categories)) + i * 0.2, vectorizer_performance[group], 0.2, label=group, color=plt.cm.viridis(i / len(groups)))
+    # for i, group in enumerate(groups):
+    #     ax.bar(np.arange(len(categories)) + i * 0.2, vectorizer_performance[group], 0.2, label=group, color=plt.cm.viridis(i / len(groups)))
 
-    ax.set_xlabel('Difficulties')
-    ax.set_ylabel('Accuracy')
-    ax.set_title('Comparison of Vectorizer Accuracies Across Connections Difficulties')
-    ax.set_xticks(np.arange(len(categories)) + 0.2 * 1.5)
-    ax.set_xticklabels(categories)
-    ax.legend()
-    plt.tight_layout()
-    plt.show()
+    # ax.set_xlabel('Difficulties')
+    # ax.set_ylabel('Accuracy')
+    # ax.set_title('Comparison of Vectorizer Accuracies Across Connections Difficulties')
+    # ax.set_xticks(np.arange(len(categories)) + 0.2 * 1.5)
+    # ax.set_xticklabels(categories)
+    # ax.legend()
+    # plt.tight_layout()
+    # plt.show()
 
     # clustering_performance = {
     #     'Normalized KMeans Constrained': [0.7244897959183674, 0.6938775510204082, 0.717687074829932, 0.6870748299319728, 0.7058],
@@ -169,7 +169,7 @@ if __name__ == '__main__':
 
         # Perform clustering to get guesses and check the guesses
         # You can switch the clustering algs here
-        guesses = cluster.kmeans(transformed_inputs, feature_strs)
+        guesses = cluster.hca(transformed_inputs, feature_strs)
         right = check(guesses, X_tt_str[i])
 
         correct = {i:correct[i] + right[i] for i in range(4)}

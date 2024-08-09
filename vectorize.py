@@ -49,12 +49,15 @@ def vectorize(x: list, vectorizer):
 def load_vect(x1, x2, x3=None, x4=None, merge=False):
     x1 = np.load(x1)
     x2 = np.load(x2)
+
+    # Only load 2 files
     if (not x3 or not x4) and merge:
         tr, tt = train_test_split(np.concatenate((x1, x2), axis=1), test_size=0.3, random_state=0)
         return tr, tt
     elif not x3 or not x4:
         return x1, x2
     
+    # Load all 4 files, creating train test splits
     x3 = np.load(x3)
     x4 = np.load(x4)
 

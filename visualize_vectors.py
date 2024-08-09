@@ -19,7 +19,6 @@ def show_indiv(x_vect, x_words):
     plt.show()
 
 
-
 def show(input_vects, input_words, index, labels_vects=None, labels=None):
     vects = np.load(input_vects)
     words = np.load(input_words)[index]

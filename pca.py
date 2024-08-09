@@ -3,6 +3,7 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from vectorize import load_vect as load
 
+
 def apply_pca(word_vectors, features = 2):
     """applies PCA to given word vectors and # of projected features
 
